@@ -1,6 +1,7 @@
 import json
 import requests
 from Account import Account
+from data.error import Error
 
 DEFAULT_URL = 'https://devnet.accumulatenetwork.io/v1'
 
@@ -30,8 +31,16 @@ def faucet(acc_url: str, net_url=DEFAULT_URL):
             "url": acc_url
         }
     }
-    response = requests.post(net_url, json=payload)
-    print(json.dumps(json.loads(response.content)['result'], indent=2))
+    response = json.loads(requests.post(net_url, json=payload).content)
+    is_error = 'error' in response
+    if(is_error):
+        code = response['error']['code']
+        message = response['error']['message']
+        data = response['error']['data']
+        error = Error(code, message, data)
+        raise error
+    print(json.dumps(response, indent=2))
+    #print(json.dumps(json.loads(response.content)['result'], indent=2))
 
 
 def version(net_url=DEFAULT_URL) -> str:
@@ -44,8 +53,9 @@ def version(net_url=DEFAULT_URL) -> str:
     return json.loads(response.content)['result']['data']['version']
 
 if __name__ == '__main__':
-    faucet('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME')
+    # faucet('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME', net_url='https://testnet.accumulatenetwork.io/v1')
+    print(faucet('acc://69a89e9b/ACME', net_url='https://testnet.accumulatenetwork.io/v1'))
     # faucet('acc://8669bca56b7931ea4af487ac8173468099470e89ba4e5df4/ACME')
-    # print(get_account('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME'))
+    print(get_account('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME', net_url='https://testnet.accumulatenetwork.io/v1'))
     print(version())
     # get_account('acc://8669bca56b7931ea4af487ac8173468099470e89ba4e5df4/ACME')
