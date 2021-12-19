@@ -31,10 +31,21 @@ def faucet(acc_url: str, net_url=DEFAULT_URL):
         }
     }
     response = requests.post(net_url, json=payload)
-    print(json.loads(response.content)['result'])
+    print(json.dumps(json.loads(response.content)['result'], indent=2))
+
+
+def version(net_url=DEFAULT_URL) -> str:
+    payload = {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "method": "version"
+    }
+    response = requests.post(net_url, json=payload)
+    return json.loads(response.content)['result']['data']['version']
 
 if __name__ == '__main__':
-    # faucet('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME')
+    faucet('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME')
     # faucet('acc://8669bca56b7931ea4af487ac8173468099470e89ba4e5df4/ACME')
-    print(get_account('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME'))
+    # print(get_account('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME'))
+    print(version())
     # get_account('acc://8669bca56b7931ea4af487ac8173468099470e89ba4e5df4/ACME')
