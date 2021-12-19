@@ -15,6 +15,14 @@ def get_account(acc_url: str, net_url=DEFAULT_URL):
         }
     }
     response = json.loads(requests.post(net_url, json=payload).content)
+    is_error = 'error' in response
+    if(is_error):
+        code = response['error']['code']
+        message = response['error']['message']
+        data = response['error']['data']
+        error = Error(code, message, data)
+        raise error
+
     account_type = response['result']['type']
     account_url = response['result']['data']['url']
     account_balance = response['result']['data']['balance']
