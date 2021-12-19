@@ -19,3 +19,13 @@ class JSONRPCTestCase(unittest.TestCase):
         invalid_user_adi = 'acc://8142b29062a92/ACME'
         with self.assertRaises(Error) as error:
             account = json_rpc_client.get_account(invalid_user_adi, net_url=DEFAULT_URL)
+
+    def test_faucet_success(self):
+        user_adi = 'acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME'
+        tx_id = json_rpc_client.faucet(user_adi, net_url=DEFAULT_URL)
+        self.assertEquals(type(tx_id), str)
+
+    def test_faucet_fail(self):
+        invalid_user_adi = 'acc://8142b29062a92/ACME'
+        with self.assertRaises(Error) as error:
+            account = json_rpc_client.faucet(invalid_user_adi, net_url=DEFAULT_URL)

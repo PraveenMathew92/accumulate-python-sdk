@@ -47,8 +47,8 @@ def faucet(acc_url: str, net_url=DEFAULT_URL):
         data = response['error']['data']
         error = Error(code, message, data)
         raise error
-    print(json.dumps(response, indent=2))
-    #print(json.dumps(json.loads(response.content)['result'], indent=2))
+    tx_id = response['result']['data']['txid']
+    return tx_id
 
 
 def version(net_url=DEFAULT_URL) -> str:
