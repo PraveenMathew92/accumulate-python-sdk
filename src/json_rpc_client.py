@@ -1,7 +1,7 @@
 import json
 import requests
-from Account import Account
-from data.error import Error
+from src.Account import Account
+from src.data.error import Error
 
 DEFAULT_URL = 'https://devnet.accumulatenetwork.io/v1'
 
