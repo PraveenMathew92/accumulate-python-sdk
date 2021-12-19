@@ -50,7 +50,8 @@ def version(net_url=DEFAULT_URL) -> str:
         "method": "version"
     }
     response = requests.post(net_url, json=payload)
-    return json.loads(response.content)['result']['data']['version']
+    version = json.loads(response.content)['result']['data']['version']
+    return version
 
 if __name__ == '__main__':
     # faucet('acc://8142b29062a927f87b2a4cc071bde0a31b912d6569a89e9b/ACME', net_url='https://testnet.accumulatenetwork.io/v1')
